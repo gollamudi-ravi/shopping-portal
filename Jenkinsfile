@@ -1,41 +1,38 @@
-pipeline {
-  agent any
-  stages {
-    stage('compile-app') {
-      steps {
-        echo 'this is the compile job'
-        sh 'npm install'
-      }
-    }
+pipeline{
 
-    stage('test-app') {
-      steps {
-        echo 'this is the test job'
-        sh 'npm test'
-      }
-    }
+    agent any
 
-    stage('package-app') {
-      steps {
-        echo 'this is the package job'
-        sh 'npm run package'
-      }
+    tools{
+       nodejs'nodejs' 
     }
+    
 
-    stage('archive-app') {
-      steps {
-        archiveArtifacts '**/distribution/*.zip'
-      }
+    stages{
+        stage('build-the-app'){
+            steps{
+                echo '>>> Build Step'
+                sh 'npm install'
+            }
+        }
+        stage('test-the-app'){
+            steps{
+                echo '>>> Test Step'
+                sh 'npm test'
+            }
+        }
+        stage('package-the-app'){
+            steps{
+                echo '>>> Package Step'
+                sh 'npm run package'
+            }
+        }
     }
-
-  }
-  tools {
-    nodejs 'nodejs'
-  }
-  post {
-    always {
-      echo 'Hey, this is my first pipeline as code...'
+    
+    post{
+        always{
+            echo 'Tata...'
+        }
+        
     }
-
-  }
+    
 }
